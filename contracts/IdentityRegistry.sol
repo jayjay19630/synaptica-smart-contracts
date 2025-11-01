@@ -31,6 +31,9 @@ contract IdentityRegistry is IIdentityRegistry {
     /// @dev Mapping from address to agent ID
     mapping(address => uint256) private _addressToAgentId;
 
+    /// @dev Array of all registered domains
+    string[] private _allDomains;
+
     /// @dev Reference to the ReputationRegistry (optional, can be zero address)
     IReputationRegistry public reputationRegistry;
 
@@ -101,10 +104,13 @@ contract IdentityRegistry is IIdentityRegistry {
         // Create lookup mappings
         _domainToAgentId[agentDomain] = agentId;
         _addressToAgentId[agentAddress] = agentId;
-        
+
+        // Add domain to the list of all domains
+        _allDomains.push(agentDomain);
+
         // Burn the registration fee by not forwarding it anywhere
         // The ETH stays locked in this contract forever
-        
+
         emit AgentRegistered(agentId, agentDomain, agentAddress);
     }
     
@@ -211,6 +217,43 @@ contract IdentityRegistry is IIdentityRegistry {
      */
     function agentExists(uint256 agentId) external view returns (bool exists) {
         return _agents[agentId].agentId != 0;
+    }
+
+    /**
+     * @dev Get all registered domains
+     * @return domains Array of all registered domain names
+     */
+    function getAllDomains() external view returns (string[] memory domains) {
+        return _allDomains;
+    }
+
+    /**
+     * @dev Get paginated list of domains
+     * @param offset Starting index
+     * @param limit Maximum number of domains to return
+     * @return domains Array of domain names
+     * @return total Total number of registered domains
+     */
+    function getDomainsPaginated(uint256 offset, uint256 limit) external view returns (string[] memory domains, uint256 total) {
+        total = _allDomains.length;
+
+        if (offset >= total) {
+            return (new string[](0), total);
+        }
+
+        uint256 end = offset + limit;
+        if (end > total) {
+            end = total;
+        }
+
+        uint256 size = end - offset;
+        domains = new string[](size);
+
+        for (uint256 i = 0; i < size; i++) {
+            domains[i] = _allDomains[offset + i];
+        }
+
+        return (domains, total);
     }
 
     // ============ ERC8004 Extended Functions ============

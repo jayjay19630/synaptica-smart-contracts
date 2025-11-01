@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/joan/repos/SmartContract/contracts/IdentityRegistry.sol": {
-      "lastModificationDate": 1762007016269,
-      "contentHash": "f95fe126071c12f3a7916c976717d807",
+      "lastModificationDate": 1762007996418,
+      "contentHash": "9597825e1e6d91b0bc4359366b18f204",
       "sourceName": "contracts/IdentityRegistry.sol",
       "solcConfig": {
         "version": "0.8.19",
