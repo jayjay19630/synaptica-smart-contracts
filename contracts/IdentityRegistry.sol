@@ -66,8 +66,9 @@ contract IdentityRegistry is IIdentityRegistry {
      * @inheritdoc IIdentityRegistry
      */
     function newAgent(
-        string calldata agentDomain, 
-        address agentAddress
+        string calldata agentDomain,
+        address agentAddress,
+        string calldata metadataUri
     ) external payable returns (uint256 agentId) {
 
         // Validate inputs
@@ -77,7 +78,7 @@ contract IdentityRegistry is IIdentityRegistry {
         if (agentAddress == address(0)) {
             revert InvalidAddress();
         }
-        
+
         // Check for duplicates
         if (_domainToAgentId[agentDomain] != 0) {
             revert DomainAlreadyRegistered();
@@ -93,12 +94,13 @@ contract IdentityRegistry is IIdentityRegistry {
 
         // Assign new agent ID
         agentId = _agentIdCounter++;
-        
+
         // Store agent info
         _agents[agentId] = AgentInfo({
             agentId: agentId,
             agentDomain: agentDomain,
-            agentAddress: agentAddress
+            agentAddress: agentAddress,
+            metadataUri: metadataUri
         });
         
         // Create lookup mappings
@@ -167,6 +169,31 @@ contract IdentityRegistry is IIdentityRegistry {
             _addressToAgentId[newAgentAddress] = agentId;
         }
         
+        emit AgentUpdated(agentId, agent.agentDomain, agent.agentAddress);
+        return true;
+    }
+
+    /**
+     * @dev Update an agent's metadata URI
+     * @param agentId The agent ID
+     * @param newMetadataUri New metadata URI
+     * @return success True if update was successful
+     */
+    function updateMetadata(uint256 agentId, string calldata newMetadataUri) external returns (bool success) {
+        // Validate agent exists
+        AgentInfo storage agent = _agents[agentId];
+        if (agent.agentId == 0) {
+            revert AgentNotFound();
+        }
+
+        // Check authorization
+        if (msg.sender != agent.agentAddress) {
+            revert UnauthorizedUpdate();
+        }
+
+        // Update metadata
+        agent.metadataUri = newMetadataUri;
+
         emit AgentUpdated(agentId, agent.agentDomain, agent.agentAddress);
         return true;
     }

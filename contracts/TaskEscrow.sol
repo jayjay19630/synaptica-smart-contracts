@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.19;
 
 /// @title TaskEscrow - Hedera marketplace escrow with multi-verifier consensus
 /// @notice Holds HBAR deposits for marketplace tasks and releases funds once enough verifiers approve

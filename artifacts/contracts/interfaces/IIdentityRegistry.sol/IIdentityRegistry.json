@@ -146,6 +146,11 @@
               "internalType": "address",
               "name": "agentAddress",
               "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "metadataUri",
+              "type": "string"
             }
           ],
           "internalType": "struct IIdentityRegistry.AgentInfo",
@@ -180,6 +185,11 @@
           "internalType": "address",
           "name": "agentAddress",
           "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "metadataUri",
+          "type": "string"
         }
       ],
       "name": "newAgent",
@@ -219,6 +229,11 @@
               "internalType": "address",
               "name": "agentAddress",
               "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "metadataUri",
+              "type": "string"
             }
           ],
           "internalType": "struct IIdentityRegistry.AgentInfo",
@@ -255,6 +270,11 @@
               "internalType": "address",
               "name": "agentAddress",
               "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "metadataUri",
+              "type": "string"
             }
           ],
           "internalType": "struct IIdentityRegistry.AgentInfo",

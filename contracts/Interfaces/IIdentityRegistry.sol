@@ -28,6 +28,7 @@ interface IIdentityRegistry {
         uint256 agentId;
         string agentDomain;
         address agentAddress;
+        string metadataUri; // URI pointing to JSON with API spec, capabilities, etc.
     }
 
     // ============ Errors ============
@@ -46,10 +47,11 @@ interface IIdentityRegistry {
      * @dev Register a new agent
      * @param agentDomain The domain where the agent's AgentCard is hosted
      * @param agentAddress The EVM address of the agent
+     * @param metadataUri URI pointing to JSON with API spec, capabilities, etc.
      * @return agentId The unique identifier assigned to the agent
      * @notice Requires 0.005 ETH fee which is burned
      */
-    function newAgent(string calldata agentDomain, address agentAddress) external payable returns (uint256 agentId);
+    function newAgent(string calldata agentDomain, address agentAddress, string calldata metadataUri) external payable returns (uint256 agentId);
     
     /**
      * @dev Update an existing agent's information
