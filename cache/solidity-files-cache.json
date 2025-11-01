@@ -1,0 +1,223 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/Users/joan/repos/SmartContract/contracts/IdentityRegistry.sol": {
+      "lastModificationDate": 1761993420590,
+      "contentHash": "5561dbc25acb1daca724f7dc84f74d76",
+      "sourceName": "contracts/IdentityRegistry.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 500
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/IIdentityRegistry.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.19"
+      ],
+      "artifacts": [
+        "IdentityRegistry"
+      ]
+    },
+    "/Users/joan/repos/SmartContract/contracts/interfaces/IIdentityRegistry.sol": {
+      "lastModificationDate": 1761993354879,
+      "contentHash": "65b8c4e48d1eaa6bddadb9448da469af",
+      "sourceName": "contracts/interfaces/IIdentityRegistry.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 500
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.19"
+      ],
+      "artifacts": [
+        "IIdentityRegistry"
+      ]
+    },
+    "/Users/joan/repos/SmartContract/contracts/ValidationRegistry.sol": {
+      "lastModificationDate": 1761993435241,
+      "contentHash": "8de2dc93712a69ace48481c0c1c21359",
+      "sourceName": "contracts/ValidationRegistry.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 500
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/IValidationRegistry.sol",
+        "./interfaces/IIdentityRegistry.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.19"
+      ],
+      "artifacts": [
+        "ValidationRegistry"
+      ]
+    },
+    "/Users/joan/repos/SmartContract/contracts/interfaces/IValidationRegistry.sol": {
+      "lastModificationDate": 1761993405970,
+      "contentHash": "608928f88e88f1602d3849b83dd04ee7",
+      "sourceName": "contracts/interfaces/IValidationRegistry.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 500
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.19"
+      ],
+      "artifacts": [
+        "IValidationRegistry"
+      ]
+    },
+    "/Users/joan/repos/SmartContract/contracts/ReputationRegistry.sol": {
+      "lastModificationDate": 1761993427823,
+      "contentHash": "32ee37ca568c3632767f6cd40e625d96",
+      "sourceName": "contracts/ReputationRegistry.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 500
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/IReputationRegistry.sol",
+        "./interfaces/IIdentityRegistry.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.19"
+      ],
+      "artifacts": [
+        "ReputationRegistry"
+      ]
+    },
+    "/Users/joan/repos/SmartContract/contracts/interfaces/IReputationRegistry.sol": {
+      "lastModificationDate": 1761993400114,
+      "contentHash": "2a5ef9645bca9001b36cedb6c65589a5",
+      "sourceName": "contracts/interfaces/IReputationRegistry.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 500
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.19"
+      ],
+      "artifacts": [
+        "IReputationRegistry"
+      ]
+    }
+  }
+}
