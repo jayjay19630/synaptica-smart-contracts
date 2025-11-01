@@ -21,13 +21,13 @@ This Hedera Hardhat Example Project offers boilerplate code for testing and depl
 1. Clone this repo to your local machine:
 
 ```shell
-git clone https://github.com/hashgraph/hedera-hardhat-example-project.git
+git clone git@github.com:ProvidAI/SmartContract.git
 ```
 
 2. Once you've cloned the repository, open your IDE terminal and navigate to the root directory of the project:
 
 ```shell
-cd hedera-hardhat-example-project
+cd SmartContract
 ```
 
 3. Run the following command to install all the necessary dependencies:
@@ -40,52 +40,5 @@ npm install
 
 5. Rename `.env.example` to `.env`
 
-6. Run the test script from the root directory of the project. The default network is set to "local."
+6. Run `npx hardhat deploy-contract`
 
-```shell
-# runs test on default network
-npx hardhat test
-
-# runs test on testnet 
-npx hardhat test --network testnet
-```
-
-Expect an output similar to the following:
-```shell
-  RPC
-The address 0xe0b73F64b0de6032b193648c08899f20b5A6141D has 10000000000000000000000 weibars
-    ✔ should be able to get the account balance (1678ms)
-Greeter deployed to: 0xD9d0c5C0Ff85758BdF05A7636F8036d4D065F5B6
-    ✔ should be able to deploy a contract (11456ms)
-Contract call result: initial_msg
-    ✔ should be able to make a contract view call (1249ms)
-Updated call result: updated_msg
-Contract call result: updated_msg
-    ✔ should be able to make a contract call (6806ms)
-
-
-  4 passing (22s)
-```
-
-7. Run the following command to deploy the smart contract. 
-```shell
-# deploys to the default network
-npx hardhat deploy-contract
-
-# deploys to testnet
-npx hardhat deploy-contract --network testnet
-```
-
-# Contributing
-Contributions are welcome. Please see the
-[contributing guide](https://github.com/hashgraph/.github/blob/main/CONTRIBUTING.md)
-to see how you can get involved.
-
-# Code of Conduct
-This project is governed by the
-[Contributor Covenant Code of Conduct](https://github.com/hashgraph/.github/blob/main/CODE_OF_CONDUCT.md). By
-participating, you are expected to uphold this code of conduct. Please report unacceptable behavior
-to [oss@hedera.com](mailto:oss@hedera.com).
-
-# License
-[Apache License 2.0](LICENSE)
