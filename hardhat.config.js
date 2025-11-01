@@ -4,6 +4,11 @@ require("@nomiclabs/hardhat-ethers");
 // Import dotenv module to access variables stored in the .env file
 require("dotenv").config();
 
+task("deploy-contract", async () => {
+  const deployContract = require("./scripts/deployContract");
+  return deployContract();
+});
+
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   mocha: {
