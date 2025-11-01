@@ -45,11 +45,7 @@ contract IdentityRegistry is IIdentityRegistry {
         string calldata agentDomain, 
         address agentAddress
     ) external payable returns (uint256 agentId) {
-        // Validate fee
-        if (msg.value != REGISTRATION_FEE) {
-            revert InsufficientFee();
-        }
-        
+
         // Validate inputs
         if (bytes(agentDomain).length == 0) {
             revert InvalidDomain();
