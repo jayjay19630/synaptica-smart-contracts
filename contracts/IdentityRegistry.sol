@@ -61,7 +61,12 @@ contract IdentityRegistry is IIdentityRegistry {
         if (_addressToAgentId[agentAddress] != 0) {
             revert AddressAlreadyRegistered();
         }
-        
+
+        // Validate registration fee payment
+        if (msg.value < REGISTRATION_FEE) {
+            revert InsufficientFee();
+        }
+
         // Assign new agent ID
         agentId = _agentIdCounter++;
         
