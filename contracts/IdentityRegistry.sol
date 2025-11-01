@@ -88,9 +88,9 @@ contract IdentityRegistry is IIdentityRegistry {
         }
 
         // Validate registration fee payment
-        if (msg.value < REGISTRATION_FEE) {
-            revert InsufficientFee();
-        }
+        //if (msg.value < REGISTRATION_FEE) {
+        //    revert InsufficientFee();
+        //}
 
         // Assign new agent ID
         agentId = _agentIdCounter++;
