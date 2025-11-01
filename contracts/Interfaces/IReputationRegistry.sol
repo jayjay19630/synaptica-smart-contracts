@@ -3,61 +3,59 @@ pragma solidity ^0.8.19;
 
 /**
  * @title IReputationRegistry
- * @dev Interface for the Reputation Registry as defined in ERC-XXXX Trustless Agents v0.3
- * @notice This contract provides a lightweight entry point for task feedback between agents
+ * @dev Simple reputation system with up/down votes
  */
 interface IReputationRegistry {
     // ============ Events ============
-    
-    /**
-     * @dev Emitted when feedback is authorized for a client-server pair
-     */
-    event AuthFeedback(
-        uint256 indexed agentClientId,
-        uint256 indexed agentServerId,
-        bytes32 indexed feedbackAuthId
+
+    event ReputationChanged(
+        uint256 indexed agentId,
+        address indexed voter,
+        bool isPositive,
+        int256 newScore
     );
 
     // ============ Errors ============
-    
+
     error AgentNotFound();
-    error UnauthorizedFeedback();
-    error FeedbackAlreadyAuthorized();
-    error InvalidAgentId();
+    error AlreadyVoted();
 
     // ============ Write Functions ============
-    
+
     /**
-     * @dev Accept feedback authorization from a client agent
-     * @param agentClientId The ID of the client agent who will provide feedback
-     * @param agentServerId The ID of the server agent who will receive feedback
-     * @notice This creates a unique authorization for the client to provide feedback
-     * @notice Only callable by the server agent's registered address
+     * @dev Vote positively for an agent (increases reputation)
+     * @param agentId The agent to vote for
      */
-    function acceptFeedback(uint256 agentClientId, uint256 agentServerId) external;
+    function voteUp(uint256 agentId) external;
+
+    /**
+     * @dev Vote negatively for an agent (decreases reputation)
+     * @param agentId The agent to vote against
+     */
+    function voteDown(uint256 agentId) external;
 
     // ============ Read Functions ============
-    
+
     /**
-     * @dev Check if feedback is authorized for a client-server pair
-     * @param agentClientId The client agent ID
-     * @param agentServerId The server agent ID
-     * @return isAuthorized True if feedback is authorized
-     * @return feedbackAuthId The unique authorization ID if authorized
+     * @dev Get an agent's reputation score
+     * @param agentId The agent ID
+     * @return score The reputation score (can be negative)
      */
-    function isFeedbackAuthorized(
-        uint256 agentClientId, 
-        uint256 agentServerId
-    ) external view returns (bool isAuthorized, bytes32 feedbackAuthId);
-    
+    function getReputation(uint256 agentId) external view returns (int256 score);
+
     /**
-     * @dev Get the feedback authorization ID for a client-server pair
-     * @param agentClientId The client agent ID
-     * @param agentServerId The server agent ID
-     * @return feedbackAuthId The unique authorization ID
+     * @dev Get vote counts for an agent
+     * @param agentId The agent ID
+     * @return upVotes Number of positive votes
+     * @return downVotes Number of negative votes
      */
-    function getFeedbackAuthId(
-        uint256 agentClientId, 
-        uint256 agentServerId
-    ) external view returns (bytes32 feedbackAuthId);
+    function getVoteCounts(uint256 agentId) external view returns (uint256 upVotes, uint256 downVotes);
+
+    /**
+     * @dev Check if an address has voted for an agent
+     * @param agentId The agent ID
+     * @param voter The voter address
+     * @return hasVoted True if already voted
+     */
+    function hasVoted(uint256 agentId, address voter) external view returns (bool hasVoted);
 }

@@ -3,105 +3,49 @@ pragma solidity ^0.8.19;
 
 /**
  * @title IValidationRegistry
- * @dev Interface for the Validation Registry as defined in ERC-XXXX Trustless Agents v0.3
- * @notice This contract provides hooks for requesting and recording independent validation
+ * @dev Simple validation system where validators submit scores for agents
  */
 interface IValidationRegistry {
     // ============ Events ============
-    
-    /**
-     * @dev Emitted when a validation request is made
-     */
-    event ValidationRequestEvent(
-        uint256 indexed agentValidatorId,
-        uint256 indexed agentServerId,
-        bytes32 indexed dataHash
-    );
-    
-    /**
-     * @dev Emitted when a validation response is submitted
-     */
-    event ValidationResponseEvent(
-        uint256 indexed agentValidatorId,
-        uint256 indexed agentServerId,
-        bytes32 indexed dataHash,
-        uint8 response
-    );
 
-    // ============ Structs ============
-    
-    /**
-     * @dev Validation request structure
-     */
-    struct Request {
-        uint256 agentValidatorId;
-        uint256 agentServerId;
-        bytes32 dataHash;
-        uint256 timestamp;
-        bool responded;
-    }
+    event ValidationSubmitted(
+        uint256 indexed agentId,
+        address indexed validator,
+        uint8 score,
+        string dataUri
+    );
 
     // ============ Errors ============
-    
+
     error AgentNotFound();
-    error ValidationRequestNotFound();
-    error ValidationAlreadyResponded();
-    error UnauthorizedValidator();
-    error RequestExpired();
-    error InvalidResponse();
-    error InvalidDataHash();
+    error InvalidScore();
+    error AlreadyValidated();
 
     // ============ Write Functions ============
-    
+
     /**
-     * @dev Submit a validation request
-     * @param agentValidatorId The ID of the validator agent
-     * @param agentServerId The ID of the server agent whose work needs validation
-     * @param dataHash Hash of the data to be validated
-     * @notice Creates a validation request that can be responded to by the validator
+     * @dev Submit a validation score for an agent
+     * @param agentId The agent being validated
+     * @param score Validation score (0-100)
+     * @param dataUri Optional URI with validation details
      */
-    function validationRequest(
-        uint256 agentValidatorId,
-        uint256 agentServerId,
-        bytes32 dataHash
-    ) external;
-    
-    /**
-     * @dev Submit a validation response
-     * @param dataHash Hash of the data that was validated
-     * @param response Validation score (0-100)
-     * @notice Only callable by the designated validator agent's address
-     */
-    function validationResponse(bytes32 dataHash, uint8 response) external;
+    function submitValidation(uint256 agentId, uint8 score, string calldata dataUri) external;
 
     // ============ Read Functions ============
-    
+
     /**
-     * @dev Get validation request details
-     * @param dataHash The hash of the data being validated
-     * @return request The validation request details
+     * @dev Get aggregated validation data for an agent
+     * @param agentId The agent ID
+     * @return validationCount Number of validations
+     * @return averageScore Average validation score (0-100)
      */
-    function getValidationRequest(bytes32 dataHash) external view returns (Request memory request);
-    
+    function getValidation(uint256 agentId) external view returns (uint256 validationCount, uint8 averageScore);
+
     /**
-     * @dev Check if a validation request exists and is pending
-     * @param dataHash The hash of the data being validated
-     * @return exists True if the request exists
-     * @return pending True if the request is still pending response
+     * @dev Check if a validator has already validated an agent
+     * @param agentId The agent ID
+     * @param validator The validator address
+     * @return hasValidated True if already validated
      */
-    function isValidationPending(bytes32 dataHash) external view returns (bool exists, bool pending);
-    
-    /**
-     * @dev Get the validation response for a data hash
-     * @param dataHash The hash of the validated data
-     * @return hasResponse True if a response exists
-     * @return response The validation score (0-100)
-     */
-    function getValidationResponse(bytes32 dataHash) external view returns (bool hasResponse, uint8 response);
-    
-    /**
-     * @dev Get the expiration time for validation requests
-     * @return slots Number of storage slots a request remains valid
-     */
-    function getExpirationSlots() external view returns (uint256 slots);
+    function hasValidated(uint256 agentId, address validator) external view returns (bool hasValidated);
 }

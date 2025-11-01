@@ -216,93 +216,67 @@ contract IdentityRegistry is IIdentityRegistry {
     // ============ ERC8004 Extended Functions ============
 
     /**
-     * @dev Check if feedback is authorized between a client and server agent
-     * @param agentClientId The client agent ID
-     * @param agentServerId The server agent ID
-     * @return isAuthorized True if feedback is authorized
-     * @return feedbackAuthId The unique authorization ID
-     * @notice Returns false if ReputationRegistry is not set
+     * @dev Get an agent's reputation score
+     * @param agentId The agent ID
+     * @return score The reputation score
+     * @notice Returns 0 if ReputationRegistry is not set
      */
-    function getAgentReputationAuth(
-        uint256 agentClientId,
-        uint256 agentServerId
-    ) external view returns (bool isAuthorized, bytes32 feedbackAuthId) {
+    function getAgentReputation(uint256 agentId) external view returns (int256 score) {
         if (address(reputationRegistry) == address(0)) {
-            return (false, bytes32(0));
+            return 0;
         }
-        return reputationRegistry.isFeedbackAuthorized(agentClientId, agentServerId);
+        return reputationRegistry.getReputation(agentId);
     }
 
     /**
-     * @dev Get validation response for a specific data hash
-     * @param dataHash The hash of the validated data
-     * @return hasResponse True if a response exists
-     * @return response The validation score (0-100)
-     * @notice Returns false if ValidationRegistry is not set
+     * @dev Get vote counts for an agent
+     * @param agentId The agent ID
+     * @return upVotes Number of positive votes
+     * @return downVotes Number of negative votes
+     * @notice Returns zeros if ReputationRegistry is not set
      */
-    function getAgentValidationResponse(
-        bytes32 dataHash
-    ) external view returns (bool hasResponse, uint8 response) {
+    function getAgentVoteCounts(uint256 agentId) external view returns (uint256 upVotes, uint256 downVotes) {
+        if (address(reputationRegistry) == address(0)) {
+            return (0, 0);
+        }
+        return reputationRegistry.getVoteCounts(agentId);
+    }
+
+    /**
+     * @dev Get validation data for an agent
+     * @param agentId The agent ID
+     * @return validationCount Number of validations
+     * @return averageScore Average validation score (0-100)
+     * @notice Returns zeros if ValidationRegistry is not set
+     */
+    function getAgentValidation(uint256 agentId) external view returns (uint256 validationCount, uint8 averageScore) {
         if (address(validationRegistry) == address(0)) {
-            return (false, 0);
+            return (0, 0);
         }
-        return validationRegistry.getValidationResponse(dataHash);
+        return validationRegistry.getValidation(agentId);
     }
 
     /**
-     * @dev Check if a validation request exists and is pending for a data hash
-     * @param dataHash The hash of the data being validated
-     * @return exists True if the request exists
-     * @return pending True if the request is still pending response
-     * @notice Returns false if ValidationRegistry is not set
-     */
-    function getAgentValidationStatus(
-        bytes32 dataHash
-    ) external view returns (bool exists, bool pending) {
-        if (address(validationRegistry) == address(0)) {
-            return (false, false);
-        }
-        return validationRegistry.isValidationPending(dataHash);
-    }
-
-    /**
-     * @dev Get complete validation request details
-     * @param dataHash The hash of the data being validated
-     * @return request The validation request details
-     * @notice Reverts if ValidationRegistry is not set or request not found
-     */
-    function getAgentValidationRequest(
-        bytes32 dataHash
-    ) external view returns (IValidationRegistry.Request memory request) {
-        require(address(validationRegistry) != address(0), "ValidationRegistry not set");
-        return validationRegistry.getValidationRequest(dataHash);
-    }
-
-    /**
-     * @dev Get comprehensive agent information including identity, reputation, and validation status
+     * @dev Get comprehensive agent information including identity, reputation, and validation
      * @param agentId The agent's unique identifier
-     * @param otherAgentId Optional: another agent ID to check reputation relationship with
-     * @param dataHash Optional: data hash to check validation status for
      * @return agentInfo The agent's identity information
-     * @return hasReputationAuth True if reputation is authorized with otherAgentId
-     * @return feedbackAuthId The reputation authorization ID (if applicable)
-     * @return hasValidation True if validation exists for dataHash
-     * @return validationPending True if validation is still pending
-     * @return validationScore The validation score (0-100, only valid if hasValidation is true)
+     * @return reputationScore The agent's reputation score
+     * @return upVotes Number of up votes
+     * @return downVotes Number of down votes
+     * @return validationCount Number of validations received
+     * @return validationScore Average validation score (0-100)
      */
     function getAgentFullInfo(
-        uint256 agentId,
-        uint256 otherAgentId,
-        bytes32 dataHash
+        uint256 agentId
     )
         external
         view
         returns (
             AgentInfo memory agentInfo,
-            bool hasReputationAuth,
-            bytes32 feedbackAuthId,
-            bool hasValidation,
-            bool validationPending,
+            int256 reputationScore,
+            uint256 upVotes,
+            uint256 downVotes,
+            uint256 validationCount,
             uint8 validationScore
         )
     {
@@ -312,21 +286,15 @@ contract IdentityRegistry is IIdentityRegistry {
             revert AgentNotFound();
         }
 
-        // Get reputation info if registry is set and otherAgentId provided
-        if (address(reputationRegistry) != address(0) && otherAgentId != 0) {
-            (hasReputationAuth, feedbackAuthId) = reputationRegistry.isFeedbackAuthorized(
-                agentId,
-                otherAgentId
-            );
+        // Get reputation info if registry is set
+        if (address(reputationRegistry) != address(0)) {
+            reputationScore = reputationRegistry.getReputation(agentId);
+            (upVotes, downVotes) = reputationRegistry.getVoteCounts(agentId);
         }
 
-        // Get validation info if registry is set and dataHash provided
-        if (address(validationRegistry) != address(0) && dataHash != bytes32(0)) {
-            bool exists;
-            (exists, validationPending) = validationRegistry.isValidationPending(dataHash);
-            if (exists) {
-                (hasValidation, validationScore) = validationRegistry.getValidationResponse(dataHash);
-            }
+        // Get validation info if registry is set
+        if (address(validationRegistry) != address(0)) {
+            (validationCount, validationScore) = validationRegistry.getValidation(agentId);
         }
     }
 
