@@ -40,5 +40,30 @@ npm install
 
 5. Rename `.env.example` to `.env`
 
-6. Run `npx hardhat deploy-contract`
+## Deployment
+
+### Compile Smart Contracts
+
+Before deploying, compile your smart contracts to check for any errors:
+
+```shell
+npx hardhat compile
+```
+
+This will compile all contracts in the [/contracts](contracts/) folder and generate artifacts in the `/artifacts` directory.
+
+### Deploy to Hedera Testnet
+
+Once compilation is successful, deploy your contracts to the Hedera testnet:
+
+```shell
+npx hardhat deploy-contract
+```
+
+This command will:
+- Connect to the Hedera testnet using your configured credentials
+- Deploy the smart contracts
+- Output the deployed contract addresses
+
+Make sure your `.env` file is properly configured with your testnet operator private key before running this command.
 
