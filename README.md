@@ -1,44 +1,61 @@
-# Hedera Hardhat Example Project
+# Synaptica Smart Contracts
 
-This Hedera Hardhat Example Project offers boilerplate code for testing and deploying smart contracts via Hardhat. It includes configuration for both community-hosted and local ([Hedera Local Node](https://github.com/hashgraph/hedera-local-node)) instances of the [Hedera JSON RPC Relay](https://github.com/hashgraph/hedera-json-rpc-relay). 
+A comprehensive smart contract system built on Hedera for trustless agent identity management, reputation tracking, validation, and task escrow with multi-verifier consensus.
 
-:fire: Check out the step-by-step tutorial [here](https://docs.hedera.com/hedera/tutorials/smart-contracts/deploy-a-smart-contract-using-hardhat-and-hedera-json-rpc-relays).
+## Overview
 
-## Project Files and Folders
+This project implements a decentralized infrastructure for AI agents and marketplace tasks on the Hedera network. The contract suite includes:
 
-- `hardhat.config.js` - This is the configuration file for your Hardhat project development environment. It centralizes and defines various settings like Hedera networks, Solidity compiler versions, plugins, and tasks.
+- **IdentityRegistry** - Central registry for agent identities with spam protection via registration fees
+- **ReputationRegistry** - Track and manage agent reputation scores and history
+- **ValidationRegistry** - Validate agent behaviors and interactions
+- **TaskEscrow** - Escrow system for marketplace tasks with multi-verifier consensus for secure fund release
 
-- `/contracts` - This folder holds all the Solidity smart contract files that make up the core logic of your dApp. Contracts are written in `.sol` files.
+The project uses Hardhat for development and supports both Hedera testnet and local node deployments via the [Hedera JSON RPC Relay](https://github.com/hashgraph/hedera-json-rpc-relay).
 
-- `/test` - This folder contains test scripts that help validate your smart contracts' functionality. These tests are crucial for ensuring that your contracts behave as expected.
-  
--  `/scripts` - This folder contains essential JavaScript files for tasks such as deploying smart contracts to the Hedera network. 
+## Project Structure
 
-- `.env.example` - This file is contains the environment variables needed by the project. Copy this file to a `.env` file and fill in the actual values before starting the development server or deploying smart contracts. To expedite your test setup and deployment, some variables are pre-filled in this example file.
+- [hardhat.config.js](hardhat.config.js) - Hardhat configuration for Hedera networks, Solidity compiler settings, and deployment tasks
+
+- [/contracts](contracts/) - Core smart contract implementations:
+  - [IdentityRegistry.sol](contracts/IdentityRegistry.sol) - Agent identity and domain registration
+  - [ReputationRegistry.sol](contracts/ReputationRegistry.sol) - Reputation tracking system
+  - [ValidationRegistry.sol](contracts/ValidationRegistry.sol) - Validation and verification logic
+  - [TaskEscrow.sol](contracts/TaskEscrow.sol) - Multi-verifier escrow for task payments
+  - [/interfaces](contracts/interfaces/) - Contract interfaces for modularity
+
+- [/test](test/) - Comprehensive test suites validating contract functionality and edge cases
+
+- [/scripts](scripts/) - Deployment and utility scripts for Hedera network interactions
+
+- `.env.example` - Environment variable template. Copy to `.env` and configure with your Hedera testnet credentials
   
 ## Setup
 
-1. Clone this repo to your local machine:
+1. Clone this repository:
 
 ```shell
 git clone git@github.com:ProvidAI/SmartContract.git
-```
-
-2. Once you've cloned the repository, open your IDE terminal and navigate to the root directory of the project:
-
-```shell
 cd SmartContract
 ```
 
-3. Run the following command to install all the necessary dependencies:
+2. Install dependencies:
 
 ```shell
 npm install
 ```
 
-4. Get your Hedera testnet account hex encoded private key from the [Hedera Developer Portal](https://portal.hedera.com/register) and update the `.env.example` `TESTNET_OPERATOR_PRIVATE_KEY`
+3. Configure environment:
 
-5. Rename `.env.example` to `.env`
+```shell
+cp .env.example .env
+```
+
+Get your Hedera testnet account hex-encoded private key from the [Hedera Developer Portal](https://portal.hedera.com/register) and add it to `.env`:
+
+```
+TESTNET_OPERATOR_PRIVATE_KEY=your_private_key_here
+```
 
 ## Deployment
 
@@ -50,20 +67,34 @@ Before deploying, compile your smart contracts to check for any errors:
 npx hardhat compile
 ```
 
-This will compile all contracts in the [/contracts](contracts/) folder and generate artifacts in the `/artifacts` directory.
+This compiles all contracts in [/contracts](contracts/) and generates:
+- Contract artifacts in `/artifacts`
+- Type definitions and ABIs for contract interaction
+- Compilation reports showing any warnings or errors
 
 ### Deploy to Hedera Testnet
 
-Once compilation is successful, deploy your contracts to the Hedera testnet:
+Deploy the complete contract suite to Hedera testnet:
 
 ```shell
 npx hardhat deploy-contract
 ```
 
-This command will:
-- Connect to the Hedera testnet using your configured credentials
-- Deploy the smart contracts
-- Output the deployed contract addresses
+The deployment process:
+1. Connects to Hedera testnet using your configured private key
+2. Deploys contracts in the correct dependency order
+3. Links contract references (e.g., IdentityRegistry → ReputationRegistry)
+4. Outputs deployed contract addresses for future interactions
 
-Make sure your `.env` file is properly configured with your testnet operator private key before running this command.
+**Important**: Ensure your testnet account has sufficient HBAR balance to cover deployment gas fees and contract initialization costs.
+
+## Testing
+
+Run the comprehensive test suite:
+
+```shell
+npm test
+```
+
+This executes all tests in [/test](test/) to verify contract behavior, security, and edge cases.
 
